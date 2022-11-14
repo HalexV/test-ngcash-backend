@@ -1,0 +1,7 @@
+{
+  "src/**/*.ts|__tests__/**/*.ts": [
+    "eslint --fix",
+    "prettier --write --ignore-unknown",
+    "npm run test:staged"
+  ]
+}
