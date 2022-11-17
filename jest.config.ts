@@ -1,12 +1,8 @@
-export default {
+const config: any = {
   clearMocks: true,
   collectCoverageFrom: ['<rootDir>/src/**/*.ts'],
   coverageDirectory: 'coverage',
-  coveragePathIgnorePatterns: [
-    '<rootDir>/src/.*/dtos',
-    '<rootDir>/src/.*/repositories/I\\w+Repository\\.ts',
-    '<rootDir>/src/shared/.*/I\\w+Component\\.ts',
-  ],
+  coveragePathIgnorePatterns: ['<rootDir>/src/.*/dtos'],
   coverageProvider: 'v8',
   coverageReporters: ['html', 'text'],
   coverageThreshold: {
@@ -19,5 +15,6 @@ export default {
   },
   preset: 'ts-jest',
   roots: ['<rootDir>/__tests__', '<rootDir>/src'],
-  testMatch: ['**/*.test.ts'],
 };
+
+export default config;
