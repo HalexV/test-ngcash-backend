@@ -183,4 +183,19 @@ describe('User - Create User Use Case', () => {
 
     expect(createSpy).toBeCalledWith(expectedArguments);
   });
+
+  it('should throw if prisma user find unique throws', async () => {
+    const sut = new CreateUserUseCase();
+
+    const userDTO = {
+      username: 'valid',
+      password: 'valid1ABC',
+    };
+
+    jest.spyOn(prisma.user, 'findUnique').mockRejectedValue(new Error());
+
+    const promise = sut.execute(userDTO);
+
+    await expect(promise).rejects.toThrowError();
+  });
 });
