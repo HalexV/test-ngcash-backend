@@ -198,4 +198,19 @@ describe('User - Create User Use Case', () => {
 
     await expect(promise).rejects.toThrowError();
   });
+
+  it('should throw if prisma account nested create throws', async () => {
+    const sut = new CreateUserUseCase();
+
+    const userDTO = {
+      username: 'valid',
+      password: 'valid1ABC',
+    };
+
+    jest.spyOn(prisma.account, 'create').mockRejectedValue(new Error());
+
+    const promise = sut.execute(userDTO);
+
+    await expect(promise).rejects.toThrowError();
+  });
 });
