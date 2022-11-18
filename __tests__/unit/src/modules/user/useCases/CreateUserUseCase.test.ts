@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-misused-promises */
 import { describe, it, expect, jest, beforeEach } from '@jest/globals';
 import prisma from '../../../../../../src/client';
 import ValidationError from '../../../../../../src/errors/ValidationError';
@@ -7,6 +8,16 @@ import bcrypt from 'bcrypt';
 describe('User - Create User Use Case', () => {
   beforeEach(() => {
     jest.spyOn(prisma.user, 'findUnique').mockResolvedValue(null);
+    jest.spyOn(prisma.account, 'create').mockResolvedValue({
+      id: 'anyAccountId',
+      balance: 100,
+    });
+    jest.spyOn(prisma.user, 'create').mockResolvedValue({
+      id: 'any',
+      username: 'any',
+      password: 'any',
+      accountId: 'any',
+    });
     jest.spyOn(bcrypt, 'hash').mockImplementation(() => null);
   });
 
@@ -140,5 +151,36 @@ describe('User - Create User Use Case', () => {
     await sut.execute(userDTO);
 
     expect(hashSpy).toHaveBeenCalledWith(userDTO.password, 8);
+  });
+
+  it('should call prisma account nested create with correct arguments', async () => {
+    const sut = new CreateUserUseCase();
+
+    const userDTO = {
+      username: 'valid',
+      password: 'valid1ABC',
+    };
+
+    const mockHashedPassword = 'lakdsjj029340932ekdmflskd';
+
+    const expectedArguments = {
+      data: {
+        user: {
+          create: {
+            username: userDTO.username,
+            password: mockHashedPassword,
+          },
+        },
+      },
+    };
+
+    const createSpy = jest.spyOn(prisma.account, 'create');
+    jest.spyOn(bcrypt, 'hash').mockImplementation(async (): Promise<string> => {
+      return await new Promise((resolve) => resolve(mockHashedPassword));
+    });
+
+    await sut.execute(userDTO);
+
+    expect(createSpy).toBeCalledWith(expectedArguments);
   });
 });
