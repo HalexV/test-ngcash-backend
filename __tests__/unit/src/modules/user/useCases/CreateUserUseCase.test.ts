@@ -2,10 +2,12 @@ import { describe, it, expect, jest, beforeEach } from '@jest/globals';
 import prisma from '../../../../../../src/client';
 import ValidationError from '../../../../../../src/errors/ValidationError';
 import CreateUserUseCase from '../../../../../../src/modules/user/useCases/createUser/CreateUserUseCase';
+import bcrypt from 'bcrypt';
 
 describe('User - Create User Use Case', () => {
   beforeEach(() => {
     jest.spyOn(prisma.user, 'findUnique').mockResolvedValue(null);
+    jest.spyOn(bcrypt, 'hash').mockImplementation(() => null);
   });
 
   it('should throw a validation error when username is less than 3 characters', async () => {
@@ -123,5 +125,20 @@ describe('User - Create User Use Case', () => {
     expect(resultError.message).toStrictEqual(
       'Password must be 8 characters or more and contain a number and an uppercase letter'
     );
+  });
+
+  it('should call bcrypt hash to hash the password', async () => {
+    const sut = new CreateUserUseCase();
+
+    const userDTO = {
+      username: 'valid',
+      password: 'valid1ABC',
+    };
+
+    const hashSpy = jest.spyOn(bcrypt, 'hash');
+
+    await sut.execute(userDTO);
+
+    expect(hashSpy).toHaveBeenCalledWith(userDTO.password, 8);
   });
 });
