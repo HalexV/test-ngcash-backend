@@ -35,7 +35,7 @@ describe('User - Create User Use Case', () => {
 
     const userDTO = {
       username: 'any',
-      password: 'any',
+      password: 'abcdefghi5H',
     };
 
     const mockUser = {
@@ -57,5 +57,27 @@ describe('User - Create User Use Case', () => {
 
     expect(resultError).toBeInstanceOf(ValidationError);
     expect(resultError.message).toStrictEqual('Username already exists');
+  });
+
+  it('should throw a validation error when password is less than 8 characters', async () => {
+    const sut = new CreateUserUseCase();
+
+    const userDTO = {
+      username: 'any',
+      password: 'invalid',
+    };
+
+    let resultError;
+
+    try {
+      await sut.execute(userDTO);
+    } catch (error: any) {
+      resultError = error;
+    }
+
+    expect(resultError).toBeInstanceOf(ValidationError);
+    expect(resultError.message).toStrictEqual(
+      'Password must be 8 characters or more and contain a number and an uppercase letter'
+    );
   });
 });
