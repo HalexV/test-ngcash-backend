@@ -1,6 +1,7 @@
 import prisma from '../../../../client';
 import ValidationError from '../../../../errors/ValidationError';
 import ICreateUserDTO from '../../dtos/ICreateUserDTO';
+import bcrypt from 'bcrypt';
 
 export default class CreateUserUseCase {
   async execute({ username, password }: ICreateUserDTO): Promise<void> {
@@ -26,5 +27,7 @@ export default class CreateUserUseCase {
     });
 
     if (user != null) throw new ValidationError('Username already exists');
+
+    await bcrypt.hash(password, 8);
   }
 }
