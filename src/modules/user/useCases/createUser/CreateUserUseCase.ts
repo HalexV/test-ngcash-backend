@@ -28,6 +28,17 @@ export default class CreateUserUseCase {
 
     if (user != null) throw new ValidationError('Username already exists');
 
-    await bcrypt.hash(password, 8);
+    const hashedPassword = await bcrypt.hash(password, 8);
+
+    await prisma.account.create({
+      data: {
+        user: {
+          create: {
+            username,
+            password: hashedPassword,
+          },
+        },
+      },
+    });
   }
 }
