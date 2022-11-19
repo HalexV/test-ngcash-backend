@@ -5,8 +5,12 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
 const jwtSecret = process.env.JWT_SECRET ?? '12kflnfoi34493j0jkdsmalsaejp';
+
+interface Token {
+  token: string;
+}
 export default class AuthenticateUserUseCase {
-  async execute({ username, password }: IAuthenticateUserDTO): Promise<void> {
+  async execute({ username, password }: IAuthenticateUserDTO): Promise<Token> {
     const user = await prisma.user.findUnique({
       where: {
         username,
@@ -21,7 +25,7 @@ export default class AuthenticateUserUseCase {
     if (!compareResult)
       throw new ValidationError('Username or password is incorrect');
 
-    await jwt.sign(
+    const token = await jwt.sign(
       {
         id: user.username,
       },
@@ -30,5 +34,9 @@ export default class AuthenticateUserUseCase {
         expiresIn: '1d',
       }
     );
+
+    return {
+      token,
+    };
   }
 }
