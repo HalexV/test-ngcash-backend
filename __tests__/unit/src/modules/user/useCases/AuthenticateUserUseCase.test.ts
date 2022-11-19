@@ -3,6 +3,7 @@ import { describe, it, expect, jest, beforeEach } from '@jest/globals';
 import prisma from '../../../../../../src/client';
 import ValidationError from '../../../../../../src/errors/ValidationError';
 import AuthenticateUserUseCase from '../../../../../../src/modules/user/useCases/authenticateUser/AuthenticateUserUseCase';
+import bcrypt from 'bcrypt';
 
 describe('User - Authenticate User Use Case', () => {
   beforeEach(() => {
@@ -12,6 +13,7 @@ describe('User - Authenticate User Use Case', () => {
       password: 'any',
       accountId: 'any',
     });
+    jest.spyOn(bcrypt, 'compare').mockImplementation(() => true);
   });
 
   it('should throw a validation error when username does not exist', async () => {
@@ -23,6 +25,30 @@ describe('User - Authenticate User Use Case', () => {
     };
 
     jest.spyOn(prisma.user, 'findUnique').mockResolvedValue(null);
+
+    let resultError;
+
+    try {
+      await sut.execute(userDTO);
+    } catch (error: any) {
+      resultError = error;
+    }
+
+    expect(resultError).toBeInstanceOf(ValidationError);
+    expect(resultError.message).toStrictEqual(
+      'Username or password is incorrect'
+    );
+  });
+
+  it('should throw a validation error when password is incorrect', async () => {
+    const sut = new AuthenticateUserUseCase();
+
+    const userDTO = {
+      username: 'valid',
+      password: 'invalidABC2',
+    };
+
+    jest.spyOn(bcrypt, 'compare').mockImplementation(() => false);
 
     let resultError;
 
