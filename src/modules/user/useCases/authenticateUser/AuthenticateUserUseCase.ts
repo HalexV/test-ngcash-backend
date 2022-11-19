@@ -2,7 +2,9 @@ import prisma from '../../../../client';
 import ValidationError from '../../../../errors/ValidationError';
 import IAuthenticateUserDTO from '../../dtos/IAuthenticateUserDTO';
 import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 
+const jwtSecret = process.env.JWT_SECRET ?? '12kflnfoi34493j0jkdsmalsaejp';
 export default class AuthenticateUserUseCase {
   async execute({ username, password }: IAuthenticateUserDTO): Promise<void> {
     const user = await prisma.user.findUnique({
@@ -18,5 +20,15 @@ export default class AuthenticateUserUseCase {
 
     if (!compareResult)
       throw new ValidationError('Username or password is incorrect');
+
+    await jwt.sign(
+      {
+        id: user.username,
+      },
+      jwtSecret,
+      {
+        expiresIn: '1d',
+      }
+    );
   }
 }
