@@ -15,6 +15,7 @@ const config: any = {
   },
   preset: 'ts-jest',
   roots: ['<rootDir>/__tests__', '<rootDir>/src'],
+  setupFiles: ['<rootDir>/.jest/setEnvVars.ts'],
 };
 
 export default config;
