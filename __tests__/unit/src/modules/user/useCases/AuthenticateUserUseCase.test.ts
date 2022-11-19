@@ -7,6 +7,9 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
 describe('User - Authenticate User Use Case', () => {
+  const mockReturnedToken =
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c';
+
   beforeEach(() => {
     jest.spyOn(prisma.user, 'findUnique').mockResolvedValue({
       id: 'any',
@@ -15,12 +18,7 @@ describe('User - Authenticate User Use Case', () => {
       accountId: 'any',
     });
     jest.spyOn(bcrypt, 'compare').mockImplementation(() => true);
-    jest
-      .spyOn(jwt, 'sign')
-      .mockImplementation(
-        () =>
-          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c'
-      );
+    jest.spyOn(jwt, 'sign').mockImplementation(() => mockReturnedToken);
   });
 
   it('should throw a validation error when username does not exist', async () => {
@@ -98,5 +96,22 @@ describe('User - Authenticate User Use Case', () => {
       expectedSecret,
       expectedOptions
     );
+  });
+
+  it('should return an access token on success', async () => {
+    const sut = new AuthenticateUserUseCase();
+
+    const userDTO = {
+      username: 'any',
+      password: 'any',
+    };
+
+    const expectedResult = {
+      token: mockReturnedToken,
+    };
+
+    const result = await sut.execute(userDTO);
+
+    expect(result).toEqual(expectedResult);
   });
 });
