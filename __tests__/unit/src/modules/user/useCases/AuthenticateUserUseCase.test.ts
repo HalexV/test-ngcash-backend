@@ -4,6 +4,7 @@ import prisma from '../../../../../../src/client';
 import ValidationError from '../../../../../../src/errors/ValidationError';
 import AuthenticateUserUseCase from '../../../../../../src/modules/user/useCases/authenticateUser/AuthenticateUserUseCase';
 import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 
 describe('User - Authenticate User Use Case', () => {
   beforeEach(() => {
@@ -14,6 +15,12 @@ describe('User - Authenticate User Use Case', () => {
       accountId: 'any',
     });
     jest.spyOn(bcrypt, 'compare').mockImplementation(() => true);
+    jest
+      .spyOn(jwt, 'sign')
+      .mockImplementation(
+        () =>
+          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c'
+      );
   });
 
   it('should throw a validation error when username does not exist', async () => {
@@ -61,6 +68,35 @@ describe('User - Authenticate User Use Case', () => {
     expect(resultError).toBeInstanceOf(ValidationError);
     expect(resultError.message).toStrictEqual(
       'Username or password is incorrect'
+    );
+  });
+
+  it('should call jwt sign with correct arguments', async () => {
+    const sut = new AuthenticateUserUseCase();
+
+    const userDTO = {
+      username: 'any',
+      password: 'validABC2',
+    };
+
+    const signSpy = jest.spyOn(jwt, 'sign');
+
+    const expectedSecret = 'any';
+
+    const expectedPayload = {
+      id: userDTO.username,
+    };
+
+    const expectedOptions = {
+      expiresIn: '1d',
+    };
+
+    await sut.execute(userDTO);
+
+    expect(signSpy).toHaveBeenCalledWith(
+      expectedPayload,
+      expectedSecret,
+      expectedOptions
     );
   });
 });
