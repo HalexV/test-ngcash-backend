@@ -66,4 +66,20 @@ describe('Account - Read Account Balance Use Case', () => {
     expect(resultError).toBeInstanceOf(NotFoundError);
     expect(resultError.message).toStrictEqual('Account not found');
   });
+
+  it('should return balance on success', async () => {
+    const sut = new ReadAccountBalanceUseCase();
+
+    const readAccountDTO = {
+      accountId: 'any',
+    };
+
+    const expectedResult = {
+      balance: 100,
+    };
+
+    const result = await sut.execute(readAccountDTO);
+
+    expect(result).toEqual(expectedResult);
+  });
 });
