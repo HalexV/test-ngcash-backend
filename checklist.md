@@ -37,7 +37,7 @@ Unit Tests
 [x] Validar se o usuário existe
 [x] Validar se a senha está correta
 
-[] Todo usuário logado (ou seja, que apresente um token válido) deverá ser capaz de visualizar seu próprio _balance_ atual. Um usuário A não pode visualizar o _balance_ de um usuário B, por exemplo.
+[x] Usuário deverá ser capaz de visualizar seu próprio _balance_ atual.
 
 [] Todo usuário logado (ou seja, que apresente um token válido) deverá ser capaz de realizar um _cash-out_ informando o _username_ do usuário que sofrerá o _cash-in_), caso apresente _balance_ suficiente para isso. Atente-se ao fato de que um usuário não deverá ter a possibilidade de realizar uma transferência para si mesmo.
 
