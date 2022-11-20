@@ -24,6 +24,12 @@ export default class ListTransactionsUseCase {
       },
     };
 
+    if (cashInTransactions != null) {
+      query.where = {
+        creditedAccountId: accountId,
+      };
+    }
+
     await prisma.transaction.findMany(query);
   }
 }
