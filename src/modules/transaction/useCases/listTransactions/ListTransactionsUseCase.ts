@@ -30,6 +30,12 @@ export default class ListTransactionsUseCase {
       };
     }
 
+    if (cashOutTransactions != null) {
+      query.where = {
+        debitedAccountId: accountId,
+      };
+    }
+
     await prisma.transaction.findMany(query);
   }
 }
