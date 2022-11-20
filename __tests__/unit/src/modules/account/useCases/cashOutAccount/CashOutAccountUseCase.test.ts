@@ -13,6 +13,13 @@ describe('Account - Cash Out Account Use Case', () => {
       balance: 100,
     });
     jest.spyOn(prisma.user, 'findUnique').mockResolvedValue(null);
+    jest.spyOn(prisma.transaction, 'create').mockResolvedValue({
+      id: 'any',
+      creditedAccountId: 'random',
+      debitedAccountId: 'any',
+      value: 10,
+      createdAt: new Date(),
+    });
   });
 
   it('should throw a validation error when usernames are equal', async () => {
@@ -249,5 +256,49 @@ describe('Account - Cash Out Account Use Case', () => {
     await sut.execute(cashOutDTO);
 
     expect(updateSpy).toHaveBeenNthCalledWith(2, expectedArgument);
+  });
+
+  it('should call prisma transaction create with correct arguments', async () => {
+    const sut = new CashOutAccountUseCase();
+
+    const cashOutDTO = {
+      cashInUsername: 'random',
+      cashOutUser: {
+        username: 'any',
+        accountId: 'any',
+      },
+      value: 10,
+    };
+
+    jest.spyOn(prisma.user, 'findUnique').mockResolvedValueOnce({
+      id: 'any',
+      username: 'random',
+      password: 'any',
+      accountId: 'any',
+    });
+    jest
+      .spyOn(prisma.account, 'findUnique')
+      .mockResolvedValueOnce({
+        id: 'any',
+        balance: 100,
+      })
+      .mockResolvedValueOnce({
+        id: 'random',
+        balance: 100,
+      });
+
+    const expectedArgument = {
+      data: {
+        debitedAccountId: 'any',
+        creditedAccountId: 'random',
+        value: 10,
+      },
+    };
+
+    const createSpy = jest.spyOn(prisma.transaction, 'create');
+
+    await sut.execute(cashOutDTO);
+
+    expect(createSpy).toHaveBeenCalledWith(expectedArgument);
   });
 });
