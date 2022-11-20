@@ -88,5 +88,13 @@ export default class CashOutAccountUseCase {
         balance: cashInAccount.balance,
       },
     });
+
+    await prisma.transaction.create({
+      data: {
+        debitedAccountId: cashOutAccount.id,
+        creditedAccountId: cashInAccount.id,
+        value,
+      },
+    });
   }
 }
