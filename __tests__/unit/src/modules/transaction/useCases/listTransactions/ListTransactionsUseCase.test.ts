@@ -175,4 +175,30 @@ describe('Transaction - List Transactions Use Case', () => {
 
     expect(findManySpy).toHaveBeenCalledWith(expectedQuery);
   });
+
+  it('should call find many with correct query when cash out and date filters are on', async () => {
+    const sut = new ListTransactionsUseCase();
+
+    const listTransactionsDTO = {
+      accountId: 'any',
+      cashOutTransactions: true,
+      transactionDate: new Date(),
+    };
+
+    const expectedQuery = {
+      where: {
+        debitedAccountId: listTransactionsDTO.accountId,
+        createdAt: listTransactionsDTO.transactionDate,
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+    };
+
+    const findManySpy = jest.spyOn(prisma.transaction, 'findMany');
+
+    await sut.execute(listTransactionsDTO);
+
+    expect(findManySpy).toHaveBeenCalledWith(expectedQuery);
+  });
 });
