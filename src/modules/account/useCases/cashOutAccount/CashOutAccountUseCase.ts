@@ -23,5 +23,17 @@ export default class CashOutAccountUseCase {
 
     if (value > cashOutAccount.balance)
       throw new ValidationError('Balance insufficient');
+
+    const cashInAccountId = await prisma.user.findUnique({
+      where: {
+        username: cashInUsername,
+      },
+      select: {
+        accountId: true,
+      },
+    });
+
+    if (cashInAccountId == null)
+      throw new NotFoundError('Cash in username does not exist');
   }
 }
