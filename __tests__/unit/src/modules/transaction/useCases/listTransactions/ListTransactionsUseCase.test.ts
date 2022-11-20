@@ -117,4 +117,36 @@ describe('Transaction - List Transactions Use Case', () => {
 
     expect(findManySpy).toHaveBeenCalledWith(expectedQuery);
   });
+
+  it('should call transaction find many with default query when cash in and out filters are on', async () => {
+    const sut = new ListTransactionsUseCase();
+
+    const listTransactionsDTO = {
+      accountId: 'any',
+      cashInTransactions: true,
+      cashOutTransactions: true,
+    };
+
+    const expectedQuery = {
+      where: {
+        OR: [
+          {
+            creditedAccountId: listTransactionsDTO.accountId,
+          },
+          {
+            debitedAccountId: listTransactionsDTO.accountId,
+          },
+        ],
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+    };
+
+    const findManySpy = jest.spyOn(prisma.transaction, 'findMany');
+
+    await sut.execute(listTransactionsDTO);
+
+    expect(findManySpy).toHaveBeenCalledWith(expectedQuery);
+  });
 });
