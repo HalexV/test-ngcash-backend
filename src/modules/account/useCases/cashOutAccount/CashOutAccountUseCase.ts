@@ -4,10 +4,10 @@ import ICashOutAccountDTO from '../../dtos/ICashOutAccountDTO';
 export default class CashOutAccountUseCase {
   async execute({
     cashInUsername,
-    cashOutUsername,
+    cashOutUser,
     value,
   }: ICashOutAccountDTO): Promise<void> {
-    if (cashInUsername === cashOutUsername)
+    if (cashInUsername === cashOutUser.username)
       throw new ValidationError('Cash out to yourself invalid');
   }
 }

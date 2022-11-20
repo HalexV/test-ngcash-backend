@@ -9,7 +9,10 @@ describe('Account - Cash Out Account Use Case', () => {
 
     const cashOutDTO = {
       cashInUsername: 'equal',
-      cashOutUsername: 'equal',
+      cashOutUser: {
+        username: 'equal',
+        accountId: 'any',
+      },
       value: 10,
     };
 

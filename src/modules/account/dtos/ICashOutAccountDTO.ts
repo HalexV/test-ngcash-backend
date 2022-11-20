@@ -1,5 +1,8 @@
 export default interface ICashOutAccountDTO {
   cashInUsername: string;
-  cashOutUsername: string;
+  cashOutUser: {
+    username: string;
+    accountId: string;
+  };
   value: number;
 }
