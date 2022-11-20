@@ -71,30 +71,30 @@ export default class CashOutAccountUseCase {
     cashOutAccount.balance -= value;
     cashInAccount.balance += value;
 
-    await prisma.account.update({
-      where: {
-        id: cashOutAccount.id,
-      },
-      data: {
-        balance: cashOutAccount.balance,
-      },
-    });
-
-    await prisma.account.update({
-      where: {
-        id: cashInAccount.id,
-      },
-      data: {
-        balance: cashInAccount.balance,
-      },
-    });
-
-    await prisma.transaction.create({
-      data: {
-        debitedAccountId: cashOutAccount.id,
-        creditedAccountId: cashInAccount.id,
-        value,
-      },
-    });
+    await prisma.$transaction([
+      prisma.account.update({
+        where: {
+          id: cashOutAccount.id,
+        },
+        data: {
+          balance: cashOutAccount.balance,
+        },
+      }),
+      prisma.account.update({
+        where: {
+          id: cashInAccount.id,
+        },
+        data: {
+          balance: cashInAccount.balance,
+        },
+      }),
+      prisma.transaction.create({
+        data: {
+          debitedAccountId: cashOutAccount.id,
+          creditedAccountId: cashInAccount.id,
+          value,
+        },
+      }),
+    ]);
   }
 }
