@@ -24,13 +24,13 @@ export default class ListTransactionsUseCase {
       },
     };
 
-    if (cashInTransactions != null) {
+    if (cashInTransactions != null && cashOutTransactions == null) {
       query.where = {
         creditedAccountId: accountId,
       };
     }
 
-    if (cashOutTransactions != null) {
+    if (cashOutTransactions != null && cashInTransactions == null) {
       query.where = {
         debitedAccountId: accountId,
       };
