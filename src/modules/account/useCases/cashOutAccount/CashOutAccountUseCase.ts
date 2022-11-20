@@ -1,13 +1,19 @@
+import { Account } from '@prisma/client';
 import prisma from '../../../../client';
 import NotFoundError from '../../../../errors/NotFoundError';
 import ValidationError from '../../../../errors/ValidationError';
 import ICashOutAccountDTO from '../../dtos/ICashOutAccountDTO';
 
+interface ValidateResult {
+  cashInAccount: Account;
+  cashOutAccount: Account;
+}
+
 async function validate({
   cashInUsername,
   cashOutUser,
   value,
-}: ICashOutAccountDTO): Promise<any> {
+}: ICashOutAccountDTO): Promise<ValidateResult> {
   if (cashInUsername === cashOutUser.username)
     throw new ValidationError('Cash out to yourself invalid');
 
@@ -56,6 +62,21 @@ export default class CashOutAccountUseCase {
     cashOutUser,
     value,
   }: ICashOutAccountDTO): Promise<void> {
-    await validate({ cashInUsername, cashOutUser, value });
+    const { cashOutAccount } = await validate({
+      cashInUsername,
+      cashOutUser,
+      value,
+    });
+
+    cashOutAccount.balance -= value;
+
+    await prisma.account.update({
+      where: {
+        id: cashOutAccount.id,
+      },
+      data: {
+        balance: cashOutAccount.balance,
+      },
+    });
   }
 }
