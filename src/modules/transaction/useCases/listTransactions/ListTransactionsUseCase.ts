@@ -36,6 +36,12 @@ export default class ListTransactionsUseCase {
       };
     }
 
+    if (transactionDate != null) {
+      query.where = Object.assign(query.where, {
+        createdAt: transactionDate,
+      });
+    }
+
     await prisma.transaction.findMany(query);
   }
 }
