@@ -35,5 +35,14 @@ export default class CashOutAccountUseCase {
 
     if (cashInAccountId == null)
       throw new NotFoundError('Cash in username does not exist');
+
+    const cashInAccount = await prisma.account.findUnique({
+      where: {
+        id: cashInAccountId.accountId,
+      },
+    });
+
+    if (cashInAccount == null)
+      throw new NotFoundError('Cash in account not found');
   }
 }
