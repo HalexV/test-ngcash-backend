@@ -8,6 +8,7 @@ import CashOutAccountUseCase from '../../../../../../../src/modules/account/useC
 describe('Account - Cash Out Account Use Case', () => {
   beforeEach(() => {
     jest.spyOn(prisma.account, 'findUnique').mockResolvedValue(null);
+    jest.spyOn(prisma.user, 'findUnique').mockResolvedValue(null);
   });
 
   it('should throw a validation error when usernames are equal', async () => {
@@ -85,5 +86,36 @@ describe('Account - Cash Out Account Use Case', () => {
 
     expect(resultError).toBeInstanceOf(ValidationError);
     expect(resultError.message).toStrictEqual('Balance insufficient');
+  });
+
+  it('should throw a not found error when cash in user does not exist', async () => {
+    const sut = new CashOutAccountUseCase();
+
+    const cashOutDTO = {
+      cashInUsername: 'random',
+      cashOutUser: {
+        username: 'any',
+        accountId: 'any',
+      },
+      value: 10,
+    };
+
+    jest.spyOn(prisma.account, 'findUnique').mockResolvedValueOnce({
+      id: 'any',
+      balance: 100,
+    });
+
+    let resultError;
+
+    try {
+      await sut.execute(cashOutDTO);
+    } catch (error: any) {
+      resultError = error;
+    }
+
+    expect(resultError).toBeInstanceOf(NotFoundError);
+    expect(resultError.message).toStrictEqual(
+      'Cash in username does not exist'
+    );
   });
 });
