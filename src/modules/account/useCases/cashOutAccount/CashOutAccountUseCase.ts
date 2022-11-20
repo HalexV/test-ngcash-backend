@@ -20,5 +20,8 @@ export default class CashOutAccountUseCase {
 
     if (cashOutAccount == null)
       throw new NotFoundError('Cash out account not found');
+
+    if (value > cashOutAccount.balance)
+      throw new ValidationError('Balance insufficient');
   }
 }
