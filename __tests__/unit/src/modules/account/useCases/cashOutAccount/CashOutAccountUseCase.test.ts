@@ -118,4 +118,42 @@ describe('Account - Cash Out Account Use Case', () => {
       'Cash in username does not exist'
     );
   });
+
+  it('should throw a not found error when cash in account does not exist', async () => {
+    const sut = new CashOutAccountUseCase();
+
+    const cashOutDTO = {
+      cashInUsername: 'random',
+      cashOutUser: {
+        username: 'any',
+        accountId: 'any',
+      },
+      value: 10,
+    };
+
+    jest.spyOn(prisma.user, 'findUnique').mockResolvedValueOnce({
+      id: 'any',
+      username: 'random',
+      password: 'any',
+      accountId: 'any',
+    });
+    jest
+      .spyOn(prisma.account, 'findUnique')
+      .mockResolvedValueOnce({
+        id: 'any',
+        balance: 100,
+      })
+      .mockResolvedValueOnce(null);
+
+    let resultError;
+
+    try {
+      await sut.execute(cashOutDTO);
+    } catch (error: any) {
+      resultError = error;
+    }
+
+    expect(resultError).toBeInstanceOf(NotFoundError);
+    expect(resultError.message).toStrictEqual('Cash in account not found');
+  });
 });
