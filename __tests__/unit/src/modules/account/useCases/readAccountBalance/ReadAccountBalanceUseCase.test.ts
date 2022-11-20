@@ -30,4 +30,18 @@ describe('Account - Read Account Balance Use Case', () => {
 
     expect(findUniqueSpy).toHaveBeenCalledWith(expectedArguments);
   });
+
+  it('should throw if prisma find unique throws', async () => {
+    const sut = new ReadAccountBalanceUseCase();
+
+    const readAccountDTO = {
+      accountId: 'any',
+    };
+
+    jest.spyOn(prisma.account, 'findUnique').mockRejectedValue(new Error());
+
+    const promise = sut.execute(readAccountDTO);
+
+    await expect(promise).rejects.toThrowError();
+  });
 });
