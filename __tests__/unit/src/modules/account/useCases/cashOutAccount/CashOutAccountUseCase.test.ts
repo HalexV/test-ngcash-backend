@@ -205,4 +205,49 @@ describe('Account - Cash Out Account Use Case', () => {
 
     expect(updateSpy).toHaveBeenNthCalledWith(1, expectedArgument);
   });
+
+  it('should call prisma account update to cash in account with correct arguments', async () => {
+    const sut = new CashOutAccountUseCase();
+
+    const cashOutDTO = {
+      cashInUsername: 'random',
+      cashOutUser: {
+        username: 'any',
+        accountId: 'any',
+      },
+      value: 10,
+    };
+
+    jest.spyOn(prisma.user, 'findUnique').mockResolvedValueOnce({
+      id: 'any',
+      username: 'random',
+      password: 'any',
+      accountId: 'any',
+    });
+    jest
+      .spyOn(prisma.account, 'findUnique')
+      .mockResolvedValueOnce({
+        id: 'any',
+        balance: 100,
+      })
+      .mockResolvedValueOnce({
+        id: 'random',
+        balance: 100,
+      });
+
+    const expectedArgument = {
+      where: {
+        id: 'random',
+      },
+      data: {
+        balance: 110,
+      },
+    };
+
+    const updateSpy = jest.spyOn(prisma.account, 'update');
+
+    await sut.execute(cashOutDTO);
+
+    expect(updateSpy).toHaveBeenNthCalledWith(2, expectedArgument);
+  });
 });
