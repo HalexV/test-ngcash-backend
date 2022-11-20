@@ -20,6 +20,7 @@ describe('Account - Cash Out Account Use Case', () => {
       value: 10,
       createdAt: new Date(),
     });
+    jest.spyOn(prisma, '$transaction').mockResolvedValue([]);
   });
 
   it('should throw a validation error when usernames are equal', async () => {
@@ -300,5 +301,41 @@ describe('Account - Cash Out Account Use Case', () => {
     await sut.execute(cashOutDTO);
 
     expect(createSpy).toHaveBeenCalledWith(expectedArgument);
+  });
+
+  it('should call prisma $transaction', async () => {
+    const sut = new CashOutAccountUseCase();
+
+    const cashOutDTO = {
+      cashInUsername: 'random',
+      cashOutUser: {
+        username: 'any',
+        accountId: 'any',
+      },
+      value: 10,
+    };
+
+    jest.spyOn(prisma.user, 'findUnique').mockResolvedValueOnce({
+      id: 'any',
+      username: 'random',
+      password: 'any',
+      accountId: 'any',
+    });
+    jest
+      .spyOn(prisma.account, 'findUnique')
+      .mockResolvedValueOnce({
+        id: 'any',
+        balance: 100,
+      })
+      .mockResolvedValueOnce({
+        id: 'random',
+        balance: 100,
+      });
+
+    const transactionSpy = jest.spyOn(prisma, '$transaction');
+
+    await sut.execute(cashOutDTO);
+
+    expect(transactionSpy).toHaveBeenCalled();
   });
 });
