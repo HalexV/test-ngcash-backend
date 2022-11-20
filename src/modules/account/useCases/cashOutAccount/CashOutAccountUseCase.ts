@@ -62,13 +62,14 @@ export default class CashOutAccountUseCase {
     cashOutUser,
     value,
   }: ICashOutAccountDTO): Promise<void> {
-    const { cashOutAccount } = await validate({
+    const { cashOutAccount, cashInAccount } = await validate({
       cashInUsername,
       cashOutUser,
       value,
     });
 
     cashOutAccount.balance -= value;
+    cashInAccount.balance += value;
 
     await prisma.account.update({
       where: {
@@ -76,6 +77,15 @@ export default class CashOutAccountUseCase {
       },
       data: {
         balance: cashOutAccount.balance,
+      },
+    });
+
+    await prisma.account.update({
+      where: {
+        id: cashInAccount.id,
+      },
+      data: {
+        balance: cashInAccount.balance,
       },
     });
   }
