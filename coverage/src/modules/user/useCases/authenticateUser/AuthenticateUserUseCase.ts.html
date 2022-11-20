@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for src/modules/user/useCases/createUser/CreateUserUseCase.ts</title>
+    <title>Code coverage report for src/modules/user/useCases/authenticateUser/AuthenticateUserUseCase.ts</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../../../../../prettify.css" />
     <link rel="stylesheet" href="../../../../../base.css" />
@@ -19,20 +19,20 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../../../../../index.html">All files</a> / <a href="index.html">src/modules/user/useCases/createUser</a> CreateUserUseCase.ts</h1>
+        <h1><a href="../../../../../index.html">All files</a> / <a href="index.html">src/modules/user/useCases/authenticateUser</a> AuthenticateUserUseCase.ts</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>47/47</span>
+                <span class='fraction'>53/53</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">87.5% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>12/12</span>
+                <span class='fraction'>7/8</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>47/47</span>
+                <span class='fraction'>53/53</span>
             </div>
         
             
@@ -110,98 +110,116 @@
 <a name='L45'></a><a href='#L45'>45</a>
 <a name='L46'></a><a href='#L46'>46</a>
 <a name='L47'></a><a href='#L47'>47</a>
-<a name='L48'></a><a href='#L48'>48</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L48'></a><a href='#L48'>48</a>
+<a name='L49'></a><a href='#L49'>49</a>
+<a name='L50'></a><a href='#L50'>50</a>
+<a name='L51'></a><a href='#L51'>51</a>
+<a name='L52'></a><a href='#L52'>52</a>
+<a name='L53'></a><a href='#L53'>53</a>
+<a name='L54'></a><a href='#L54'>54</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">9x</span>
-<span class="cline-any cline-yes">9x</span>
-<span class="cline-any cline-yes">9x</span>
-<span class="cline-any cline-yes">9x</span>
-<span class="cline-any cline-yes">9x</span>
-<span class="cline-any cline-yes">9x</span>
-<span class="cline-any cline-yes">8x</span>
-<span class="cline-any cline-yes">8x</span>
-<span class="cline-any cline-yes">8x</span>
-<span class="cline-any cline-yes">9x</span>
-<span class="cline-any cline-yes">6x</span>
-<span class="cline-any cline-yes">9x</span>
-<span class="cline-any cline-yes">9x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">9x</span>
-<span class="cline-any cline-yes">9x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">9x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import prisma from '../../../../client';
 import ValidationError from '../../../../errors/ValidationError';
-import ICreateUserDTO from '../../dtos/ICreateUserDTO';
+import IAuthenticateUserDTO from '../../dtos/IAuthenticateUserDTO';
 import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 &nbsp;
-async function validate({ username, password }: ICreateUserDTO): Promise&lt;void&gt; {
-  const numberRegexValidator = /[0-9]/;
-  const uppercaseRegexValidator = /[A-Z]/;
+const jwtSecret = process.env.JWT_SECRET<span class="branch-0 cbranch-no" title="branch not covered" > ?? '12kflnfoi34493j0jkdsmalsaejp';</span>
 &nbsp;
-  if (username.length &lt; 3)
-    throw new ValidationError('Username must be 3 characters or more');
+interface Token {
+  token: string;
+}
 &nbsp;
-  if (
-    password.length &lt; 8 ||
-    !numberRegexValidator.test(password) ||
-    !uppercaseRegexValidator.test(password)
-  )
-    throw new ValidationError(
-      'Password must be 8 characters or more and contain a number and an uppercase letter'
-    );
-&nbsp;
+async function validate({
+  username,
+  password,
+}: IAuthenticateUserDTO): Promise&lt;any&gt; {
   const user = await prisma.user.findUnique({
     where: {
       username,
     },
   });
 &nbsp;
-  if (user != null) throw new ValidationError('Username already exists');
+  if (user == null)
+    throw new ValidationError('Username or password is incorrect');
+&nbsp;
+  const compareResult = await bcrypt.compare(password, user.password);
+&nbsp;
+  if (!compareResult)
+    throw new ValidationError('Username or password is incorrect');
+&nbsp;
+  return {
+    user,
+  };
 }
-export default class CreateUserUseCase {
-  async execute({ username, password }: ICreateUserDTO): Promise&lt;void&gt; {
-    await validate({ username, password });
+export default class AuthenticateUserUseCase {
+  async execute({ username, password }: IAuthenticateUserDTO): Promise&lt;Token&gt; {
+    const { user } = await validate({ username, password });
 &nbsp;
-    const hashedPassword = await bcrypt.hash(password, 8);
-&nbsp;
-    await prisma.account.create({
-      data: {
-        user: {
-          create: {
-            username,
-            password: hashedPassword,
-          },
-        },
+    const token = await jwt.sign(
+      {
+        id: user.username,
       },
-    });
+      jwtSecret,
+      {
+        expiresIn: '1d',
+      }
+    );
+&nbsp;
+    return {
+      token,
+    };
   }
 }
 &nbsp;</pre></td></tr></table></pre>
