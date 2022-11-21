@@ -181,7 +181,7 @@ $ npm run docker:down:start:dev
 
 $ npm run docker:up:start:prod
 
-# Acesse http://localhost:3001/ para verificar a mensagem Safe!
+# Acesse http://localhost:PORT/ para verificar a mensagem Safe!
 
 # Para encerrar a execução em modo de produção, execute:
 
@@ -200,9 +200,11 @@ $ npm run docker:down:start:prod
 
 $ npm run docker:up:test:unit
 
-# Acesse http://localhost:3000/ para verificar a mensagem Safe!
+# Acesse os logs do container para verificar a execução dos testes
 
-# Para encerrar a execução em modo de desenvolvimento, execute:
+$ docker logs -f watch-unit-tests
+
+# Para encerrar a execução em modo de teste unitário, execute:
 
 $ npm run docker:down:test:unit
 ```
