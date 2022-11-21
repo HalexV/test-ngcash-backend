@@ -1,0 +1,15 @@
+version: '3'
+services:
+  watch-unit-tests:
+    build:
+      context: ../../
+      dockerfile: docker-envs/watch-unit-tests/Dockerfile
+    container_name: watch-unit-tests
+    ports:
+      - '3000:3000'
+    volumes:
+      - ../../__tests__/unit/:/usr/app/__tests__/unit/
+      - ../../src/:/usr/app/src/
+    env_file:
+      - ./.docker-env
+    command: npm run test:unit
