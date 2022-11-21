@@ -25,21 +25,38 @@ export default class ListTransactionsUseCase {
       },
     };
 
-    if (cashInTransactions != null && cashOutTransactions == null) {
+    if (
+      cashInTransactions != null &&
+      cashInTransactions === true &&
+      (cashOutTransactions == null || cashOutTransactions === false)
+    ) {
       query.where = {
         creditedAccountId: accountId,
       };
     }
 
-    if (cashOutTransactions != null && cashInTransactions == null) {
+    if (
+      cashOutTransactions != null &&
+      cashOutTransactions === true &&
+      (cashInTransactions == null || cashInTransactions === false)
+    ) {
       query.where = {
         debitedAccountId: accountId,
       };
     }
 
     if (transactionDate != null) {
+      const initialDay = new Date(transactionDate.getTime());
+      const finalDay = new Date(transactionDate.getTime());
+
+      initialDay.setUTCHours(0, 0, 0, 0);
+      finalDay.setUTCHours(23, 59, 59, 999);
+
       query.where = Object.assign(query.where, {
-        createdAt: transactionDate,
+        createdAt: {
+          gte: initialDay,
+          lte: finalDay,
+        },
       });
     }
 
