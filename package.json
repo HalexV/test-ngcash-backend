@@ -4,11 +4,15 @@
   "description": "backend test for job application at NG.CASH",
   "main": "index.js",
   "scripts": {
-    "start:dev": "ts-node-dev --respawn --transpile-only src/server.ts",
+    "start:dev": "npx prisma migrate dev && ts-node-dev --respawn --transpile-only src/server.ts",
     "test": "jest --passWithNoTests --silent --noStackTrace --runInBand",
-    "test:unit": "npm run test -- --watch --verbose -c jest-unit-config.ts",
-    "test:staged": "npm run test -- --findRelatedTests",
-    "test:coverage": "npm run test -- --coverage",
+    "test:unit": "npm run test -- --watchAll --verbose -c jest-unit-config.ts",
+    "test:staged": "npm run test -- --findRelatedTests -c jest-unit-config.ts",
+    "test:coverage": "npm run test -- --coverage -c jest-unit-config.ts",
+    "docker:up:test:unit": "docker-compose -f docker-envs/watch-unit-tests/docker-compose.yml up -d --build",
+    "docker:down:test:unit": "docker-compose -f docker-envs/watch-unit-tests/docker-compose.yml down",
+    "docker:up:start:dev": "docker-compose -f docker-envs/start-dev/docker-compose.yml up -d --build",
+    "docker:down:start:dev": "docker-compose -f docker-envs/start-dev/docker-compose.yml down",
     "prepare": "husky install"
   },
   "repository": {
