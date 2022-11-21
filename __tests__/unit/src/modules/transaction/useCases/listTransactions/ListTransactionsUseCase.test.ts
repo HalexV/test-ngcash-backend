@@ -235,4 +235,18 @@ describe('Transaction - List Transactions Use Case', () => {
 
     expect(findManySpy).toHaveBeenCalledWith(expectedQuery);
   });
+
+  it('should throw if prisma transaction find many throws', async () => {
+    const sut = new ListTransactionsUseCase();
+
+    const listTransactionsDTO = {
+      accountId: 'any',
+    };
+
+    jest.spyOn(prisma.transaction, 'findMany').mockRejectedValue(new Error());
+
+    const promise = sut.execute(listTransactionsDTO);
+
+    await expect(promise).rejects.toThrowError();
+  });
 });
