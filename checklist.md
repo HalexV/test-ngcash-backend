@@ -44,8 +44,8 @@ Unit Tests
 [x] Atente-se ao fato de que um usuário não deverá ter a possibilidade de realizar uma transferência para si mesmo.
 [x] Toda nova transação bem-sucedida deverá ser registrada na tabela **Transactions**. Em casos de falhas transacionais, a tabela **Transactions** não deverá ser afetada.
 
-[] Todo usuário logado (ou seja, que apresente um token válido) deverá ser capaz de visualizar as transações financeiras (_cash-out_ e _cash-in_) que participou. Caso o usuário não tenha participado de uma determinada transação, ele nunca poderá ter acesso à ela.
-[] Todo usuário logado (ou seja, que apresente um token válido) deverá ser capaz de filtrar as transações financeiras que participou por:
-[] Data de realização da transação e/ou
-[] Transações de _cash-out;_
-[] Transações de _cash-in._
+[x] Usuário deverá ser capaz de visualizar as transações financeiras (_cash-out_ e _cash-in_) que participou. Caso o usuário não tenha participado de uma determinada transação, ele nunca poderá ter acesso à ela.
+[x] Usuário deverá ser capaz de filtrar as transações financeiras que participou por:
+[x] Data de realização da transação e/ou
+[x] Transações de _cash-out;_
+[x] Transações de _cash-in._
