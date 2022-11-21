@@ -1,3 +1,4 @@
+import { Transaction } from '@prisma/client';
 import prisma from '../../../../client';
 import IListTransactionsDTO from '../../dtos/IListTransactionsDTO';
 
@@ -7,7 +8,7 @@ export default class ListTransactionsUseCase {
     cashInTransactions,
     cashOutTransactions,
     transactionDate,
-  }: IListTransactionsDTO): Promise<void> {
+  }: IListTransactionsDTO): Promise<Transaction[]> {
     const query: any = {
       where: {
         OR: [
@@ -42,6 +43,6 @@ export default class ListTransactionsUseCase {
       });
     }
 
-    await prisma.transaction.findMany(query);
+    return await prisma.transaction.findMany(query);
   }
 }
