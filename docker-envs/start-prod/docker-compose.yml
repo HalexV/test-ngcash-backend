@@ -1,0 +1,29 @@
+version: '3'
+services:
+  database-prod:
+    image: postgres
+    container_name: database-prod
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=docker
+      - POSTGRES_PASSWORD=ngcash
+      - POSTGRES_DB=ngcash
+    volumes:
+      - pgdata:/data/postgres
+  app-prod:
+    build:
+      context: ../../
+      dockerfile: docker-envs/start-prod/Dockerfile
+    container_name: app-prod
+    ports:
+      - '3000:3000'
+    depends_on:
+      - database-prod
+    env_file:
+      - ./.env
+    command: npm run start:prod
+
+volumes:
+  pgdata:
+    driver: local
