@@ -11,7 +11,21 @@ prisma
       console.log(`Server is running at PORT: ${PORT}`);
     });
   })
-  .catch((error) => {
+  .catch(async (error) => {
     console.log(error);
+    await prisma.$disconnect();
     process.exit(1);
   });
+
+process.on('SIGTERM', () => {
+  prisma
+    .$disconnect()
+    .then(() => {
+      console.log('Database disconnected');
+      process.exit(0);
+    })
+    .catch((error) => {
+      console.log(error);
+      process.exit(1);
+    });
+});
