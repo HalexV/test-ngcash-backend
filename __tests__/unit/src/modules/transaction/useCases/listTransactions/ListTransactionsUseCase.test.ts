@@ -249,4 +249,16 @@ describe('Transaction - List Transactions Use Case', () => {
 
     await expect(promise).rejects.toThrowError();
   });
+
+  it('should return an array on success', async () => {
+    const sut = new ListTransactionsUseCase();
+
+    const listTransactionsDTO = {
+      accountId: 'any',
+    };
+
+    const result = await sut.execute(listTransactionsDTO);
+
+    expect(result).toEqual([]);
+  });
 });
