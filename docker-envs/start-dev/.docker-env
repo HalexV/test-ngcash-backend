@@ -1,0 +1,3 @@
+DATABASE_URL="postgresql://docker:ngcashdev@database-dev:5432/ngcash?schema=public"
+PORT=3000
+JWT_SECRET="779906aae7b13bf6fa217e181dbb751c"

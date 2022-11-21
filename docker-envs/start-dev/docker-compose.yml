@@ -1,0 +1,32 @@
+version: '3'
+services:
+  database-dev:
+    image: postgres
+    container_name: database-dev
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=docker
+      - POSTGRES_PASSWORD=ngcashdev
+      - POSTGRES_DB=ngcash
+    volumes:
+      - pgdata:/data/postgres
+  app-dev:
+    build:
+      context: ../../
+      dockerfile: docker-envs/start-dev/Dockerfile
+    container_name: app-dev
+    ports:
+      - '3000:3000'
+    depends_on:
+      - database-dev
+    volumes:
+      - ../../src/:/usr/app/src/
+      - ../../prisma/:/usr/app/prisma/
+    env_file:
+      - ./.docker-env
+    command: npm run start:dev
+
+volumes:
+  pgdata:
+    driver: local
