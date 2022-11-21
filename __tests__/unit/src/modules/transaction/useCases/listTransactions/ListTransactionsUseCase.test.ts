@@ -89,9 +89,17 @@ describe('Transaction - List Transactions Use Case', () => {
   it('should call transaction find many with correct query when transaction date filter is on', async () => {
     const sut = new ListTransactionsUseCase();
 
+    const date = new Date();
+
+    const initialDay = new Date(date.getTime());
+    const finalDay = new Date(date.getTime());
+
+    initialDay.setUTCHours(0, 0, 0, 0);
+    finalDay.setUTCHours(23, 59, 59, 999);
+
     const listTransactionsDTO = {
       accountId: 'any',
-      transactionDate: new Date(),
+      transactionDate: date,
     };
 
     const expectedQuery = {
@@ -104,7 +112,10 @@ describe('Transaction - List Transactions Use Case', () => {
             debitedAccountId: listTransactionsDTO.accountId,
           },
         ],
-        createdAt: listTransactionsDTO.transactionDate,
+        createdAt: {
+          gte: initialDay,
+          lte: finalDay,
+        },
       },
       orderBy: {
         createdAt: 'desc',
@@ -153,16 +164,27 @@ describe('Transaction - List Transactions Use Case', () => {
   it('should call find many with correct query when cash in and date filters are on', async () => {
     const sut = new ListTransactionsUseCase();
 
+    const date = new Date();
+
+    const initialDay = new Date(date.getTime());
+    const finalDay = new Date(date.getTime());
+
+    initialDay.setUTCHours(0, 0, 0, 0);
+    finalDay.setUTCHours(23, 59, 59, 999);
+
     const listTransactionsDTO = {
       accountId: 'any',
       cashInTransactions: true,
-      transactionDate: new Date(),
+      transactionDate: date,
     };
 
     const expectedQuery = {
       where: {
         creditedAccountId: listTransactionsDTO.accountId,
-        createdAt: listTransactionsDTO.transactionDate,
+        createdAt: {
+          gte: initialDay,
+          lte: finalDay,
+        },
       },
       orderBy: {
         createdAt: 'desc',
@@ -179,16 +201,27 @@ describe('Transaction - List Transactions Use Case', () => {
   it('should call find many with correct query when cash out and date filters are on', async () => {
     const sut = new ListTransactionsUseCase();
 
+    const date = new Date();
+
+    const initialDay = new Date(date.getTime());
+    const finalDay = new Date(date.getTime());
+
+    initialDay.setUTCHours(0, 0, 0, 0);
+    finalDay.setUTCHours(23, 59, 59, 999);
+
     const listTransactionsDTO = {
       accountId: 'any',
       cashOutTransactions: true,
-      transactionDate: new Date(),
+      transactionDate: date,
     };
 
     const expectedQuery = {
       where: {
         debitedAccountId: listTransactionsDTO.accountId,
-        createdAt: listTransactionsDTO.transactionDate,
+        createdAt: {
+          gte: initialDay,
+          lte: finalDay,
+        },
       },
       orderBy: {
         createdAt: 'desc',
@@ -205,11 +238,19 @@ describe('Transaction - List Transactions Use Case', () => {
   it('should call find many with correct query when cash in and out and date filters are on', async () => {
     const sut = new ListTransactionsUseCase();
 
+    const date = new Date();
+
+    const initialDay = new Date(date.getTime());
+    const finalDay = new Date(date.getTime());
+
+    initialDay.setUTCHours(0, 0, 0, 0);
+    finalDay.setUTCHours(23, 59, 59, 999);
+
     const listTransactionsDTO = {
       accountId: 'any',
       cashInTransactions: true,
       cashOutTransactions: true,
-      transactionDate: new Date(),
+      transactionDate: date,
     };
 
     const expectedQuery = {
@@ -222,7 +263,10 @@ describe('Transaction - List Transactions Use Case', () => {
             debitedAccountId: listTransactionsDTO.accountId,
           },
         ],
-        createdAt: listTransactionsDTO.transactionDate,
+        createdAt: {
+          gte: initialDay,
+          lte: finalDay,
+        },
       },
       orderBy: {
         createdAt: 'desc',
