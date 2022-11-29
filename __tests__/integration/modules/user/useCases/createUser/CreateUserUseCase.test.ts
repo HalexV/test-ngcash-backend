@@ -1,21 +1,31 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
-import { describe, it, expect, beforeAll, afterAll } from '@jest/globals';
+import {
+  describe,
+  it,
+  expect,
+  beforeAll,
+  afterAll,
+  afterEach,
+} from '@jest/globals';
 import prisma from '../../../../../../src/client';
 import bcrypt from 'bcrypt';
 import CreateUserUseCase from '../../../../../../src/modules/user/useCases/createUser/CreateUserUseCase';
 import { Account, User } from '@prisma/client';
+import ValidationError from '../../../../../../src/errors/ValidationError';
 
 describe('Integration - User - Create User Use Case', () => {
   beforeAll(async () => {
     await prisma.$connect();
   });
 
-  afterAll(async () => {
+  afterEach(async () => {
     const deleteUsers = prisma.user.deleteMany();
     const deleteAccounts = prisma.account.deleteMany();
 
     await prisma.$transaction([deleteUsers, deleteAccounts]);
+  });
 
+  afterAll(async () => {
     await prisma.$disconnect();
   });
 
@@ -50,5 +60,27 @@ describe('Integration - User - Create User Use Case', () => {
     expect(userCreated.password).not.toStrictEqual(createUserDTO.password);
     expect(accountCreated.balance).toBe(100);
     expect(bcryptResult).toBeTruthy();
+  });
+
+  it('should throw a validation error if username already exists', async () => {
+    const sut = new CreateUserUseCase();
+
+    const createUserDTO = {
+      username: 'testABC123',
+      password: 'testZXC321',
+    };
+
+    await sut.execute(createUserDTO);
+
+    let resultError;
+
+    try {
+      await sut.execute(createUserDTO);
+    } catch (error: any) {
+      resultError = error;
+    }
+
+    expect(resultError).toBeInstanceOf(ValidationError);
+    expect(resultError.message).toStrictEqual('Username already exists');
   });
 });
