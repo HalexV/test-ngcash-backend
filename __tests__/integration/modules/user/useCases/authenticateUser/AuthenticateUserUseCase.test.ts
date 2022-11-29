@@ -79,4 +79,25 @@ describe('Integration - User - Authenticate User Use Case', () => {
       'Username or password is incorrect'
     );
   });
+
+  it('should authenticate user and return a token', async () => {
+    const createUser = new CreateUserUseCase();
+    const sut = new AuthenticateUserUseCase();
+
+    const createUserDTO = {
+      username: 'testABC123',
+      password: 'testZXC321',
+    };
+
+    const authenticateUserDTO = {
+      username: 'testABC123',
+      password: 'testZXC321',
+    };
+
+    await createUser.execute(createUserDTO);
+
+    const result = await sut.execute(authenticateUserDTO);
+
+    expect(result).toHaveProperty('token');
+  });
 });
