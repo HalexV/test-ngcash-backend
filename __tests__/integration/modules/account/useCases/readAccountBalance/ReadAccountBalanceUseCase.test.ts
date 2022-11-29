@@ -7,9 +7,11 @@ import {
   afterAll,
   afterEach,
 } from '@jest/globals';
+import { User } from '@prisma/client';
 import prisma from '../../../../../../src/client';
 import NotFoundError from '../../../../../../src/errors/NotFoundError';
 import ReadAccountBalanceUseCase from '../../../../../../src/modules/account/useCases/readAccountBalance/ReadAccountBalanceUseCase';
+import CreateUserUseCase from '../../../../../../src/modules/user/useCases/createUser/CreateUserUseCase';
 
 describe('Integration - Account - Read Account Balance Use Case', () => {
   beforeAll(async () => {
@@ -44,5 +46,33 @@ describe('Integration - Account - Read Account Balance Use Case', () => {
 
     expect(resultError).toBeInstanceOf(NotFoundError);
     expect(resultError.message).toStrictEqual('Account not found');
+  });
+
+  it("should return user's account balance", async () => {
+    const createUser = new CreateUserUseCase();
+    const sut = new ReadAccountBalanceUseCase();
+
+    const createUserDTO = {
+      username: 'testABC123',
+      password: 'testZXC321',
+    };
+
+    const expectedResult = {
+      balance: 100,
+    };
+
+    await createUser.execute(createUserDTO);
+
+    const { accountId } = (await prisma.user.findUnique({
+      where: {
+        username: createUserDTO.username,
+      },
+    })) as User;
+
+    const result = await sut.execute({
+      accountId,
+    });
+
+    expect(result).toEqual(expectedResult);
   });
 });
