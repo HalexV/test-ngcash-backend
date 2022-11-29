@@ -1,0 +1,3 @@
+DATABASE_URL="postgresql://docker:ngcashintegrationtests@database-integration-tests:5432/ngcashintegrationtests?schema=public"
+PORT=3000
+JWT_SECRET="779906aae7b13bf6fa217e181dbb751c"

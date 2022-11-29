@@ -1,0 +1,32 @@
+version: '3'
+services:
+  database-integration-tests:
+    image: postgres
+    container_name: database-integration-tests
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=docker
+      - POSTGRES_PASSWORD=ngcashintegrationtests
+      - POSTGRES_DB=ngcashintegrationtests
+    volumes:
+      - pgdata:/data/postgres
+  watch-integration-tests:
+    build:
+      context: ../../
+      dockerfile: docker-envs/watch-integration-tests/Dockerfile
+    container_name: watch-integration-tests
+    ports:
+      - '3000:3000'
+    depends_on:
+      - database-integration-tests
+    volumes:
+      - ../../__tests__/integration/:/usr/app/__tests__/integration/
+      - ../../src/:/usr/app/src/
+    env_file:
+      - ./.docker-env
+    command: npm run test:integration
+
+volumes:
+  pgdata:
+    driver: local
