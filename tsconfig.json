@@ -9,6 +9,5 @@
     "skipLibCheck": true,
     "sourceMap": true,
     "lib": ["esnext"]
-  },
-  "include": ["src/**/*"]
+  }
 }
