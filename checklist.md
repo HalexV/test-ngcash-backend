@@ -56,9 +56,9 @@ Integration Tests
 [x] Deve-se garantir que a _password_ seja _hashada_ ao ser armazenada no banco.
 [x] Durante o processo de cadastro de um novo usuário, sua respectiva conta deverá ser criada automaticamente na tabela **Accounts** com um _balance_ de R$ 100,00.
 
-[] Todo usuário deverá conseguir logar na aplicação informando _username_ e _password._ Caso o login seja bem-sucedido, um token JWT (com 24h de validade) deverá ser fornecido.
-[] Validar se o usuário existe
-[] Validar se a senha está correta
+[x] Todo usuário deverá conseguir logar na aplicação informando _username_ e _password._ Caso o login seja bem-sucedido, um token JWT (com 24h de validade) deverá ser fornecido.
+[x] Validar se o usuário existe
+[x] Validar se a senha está correta
 
 [] Usuário deverá ser capaz de visualizar seu próprio _balance_ atual.
 
