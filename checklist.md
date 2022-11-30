@@ -65,7 +65,7 @@ Integration Tests
 [x] Usuário deverá ser capaz de realizar um _cash-out_ informando o _username_ do usuário que sofrerá o _cash-in_),
 [x] Toda nova transação bem-sucedida deverá ser registrada na tabela **Transactions**.
 
-[] Usuário deverá ser capaz de visualizar as transações financeiras (_cash-out_ e _cash-in_) que participou. Caso o usuário não tenha participado de uma determinada transação, ele nunca poderá ter acesso à ela.
+[x] Usuário deverá ser capaz de visualizar as transações financeiras (_cash-out_ e _cash-in_) que participou.
 [] Usuário deverá ser capaz de filtrar as transações financeiras que participou por:
 [] Data de realização da transação e/ou
 [] Transações de _cash-out;_
