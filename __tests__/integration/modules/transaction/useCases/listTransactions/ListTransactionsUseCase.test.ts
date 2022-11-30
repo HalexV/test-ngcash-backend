@@ -122,6 +122,46 @@ describe('Integration - Transaction - List Transactions Use Case', () => {
     };
 
     await cashOut.execute(cashOutAccountDTO);
+
+    // date: 2020-01-01T10:00:00
+    await prisma.transaction.create({
+      data: {
+        value: 10,
+        creditedAccountId: userAccountC.id,
+        debitedAccountId: userAccountB.id,
+        createdAt: new Date('2020-01-01T10:00:00'),
+      },
+    });
+
+    // date: 2020-01-02T00:00:00
+    await prisma.transaction.create({
+      data: {
+        value: 10,
+        creditedAccountId: userAccountC.id,
+        debitedAccountId: userAccountB.id,
+        createdAt: new Date('2020-01-02T00:00:00'),
+      },
+    });
+
+    // date: 2020-01-02T23:59:59
+    await prisma.transaction.create({
+      data: {
+        value: 10,
+        creditedAccountId: userAccountC.id,
+        debitedAccountId: userAccountB.id,
+        createdAt: new Date('2020-01-02T23:59:59'),
+      },
+    });
+
+    // date: 2020-01-03T00:00:00
+    await prisma.transaction.create({
+      data: {
+        value: 10,
+        creditedAccountId: userAccountC.id,
+        debitedAccountId: userAccountB.id,
+        createdAt: new Date('2020-01-03T00:00:00'),
+      },
+    });
   });
 
   afterAll(async () => {
@@ -182,8 +222,8 @@ describe('Integration - Transaction - List Transactions Use Case', () => {
       }
     });
 
-    expect(transactions.length).toStrictEqual(5);
-    expect(debited).toStrictEqual(3);
+    expect(transactions.length).toStrictEqual(9);
+    expect(debited).toStrictEqual(7);
     expect(credited).toStrictEqual(2);
   });
 
@@ -207,8 +247,8 @@ describe('Integration - Transaction - List Transactions Use Case', () => {
       }
     });
 
-    expect(transactions.length).toStrictEqual(1);
+    expect(transactions.length).toStrictEqual(5);
     expect(debited).toStrictEqual(0);
-    expect(credited).toStrictEqual(1);
+    expect(credited).toStrictEqual(5);
   });
 });
