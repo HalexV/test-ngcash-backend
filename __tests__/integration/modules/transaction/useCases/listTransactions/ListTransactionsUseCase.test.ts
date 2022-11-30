@@ -277,4 +277,30 @@ describe('Integration - Transaction - List Transactions Use Case', () => {
     expect(debited).toStrictEqual(0);
     expect(credited).toStrictEqual(1);
   });
+
+  it('should list all transactions of user C on 2020-01-02', async () => {
+    const sut = new ListTransactionsUseCase();
+
+    const transactions = await sut.execute({
+      accountId: userAccountC.id,
+      transactionDate: new Date('2020-01-02'),
+    });
+
+    let debited = 0;
+    let credited = 0;
+
+    transactions.forEach((transaction) => {
+      if (transaction.creditedAccountId === userAccountC.id) {
+        credited++;
+      }
+
+      if (transaction.debitedAccountId === userAccountC.id) {
+        debited++;
+      }
+    });
+
+    expect(transactions.length).toStrictEqual(2);
+    expect(debited).toStrictEqual(0);
+    expect(credited).toStrictEqual(2);
+  });
 });
