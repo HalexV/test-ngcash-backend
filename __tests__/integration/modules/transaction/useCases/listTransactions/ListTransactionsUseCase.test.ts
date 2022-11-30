@@ -381,4 +381,30 @@ describe('Integration - Transaction - List Transactions Use Case', () => {
     expect(debited).toStrictEqual(0);
     expect(credited).toStrictEqual(2);
   });
+
+  it('should list all debited transactions of user B', async () => {
+    const sut = new ListTransactionsUseCase();
+
+    const transactions = await sut.execute({
+      accountId: userAccountB.id,
+      cashOutTransactions: true,
+    });
+
+    let debited = 0;
+    let credited = 0;
+
+    transactions.forEach((transaction) => {
+      if (transaction.creditedAccountId === userAccountB.id) {
+        credited++;
+      }
+
+      if (transaction.debitedAccountId === userAccountB.id) {
+        debited++;
+      }
+    });
+
+    expect(transactions.length).toStrictEqual(7);
+    expect(debited).toStrictEqual(7);
+    expect(credited).toStrictEqual(0);
+  });
 });
