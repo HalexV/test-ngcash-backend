@@ -70,3 +70,35 @@ Integration Tests
 [x] Data de realização da transação e/ou
 [x] Transações de _cash-out;_
 [x] Transações de _cash-in._
+
+E2E Tests
+
+Middlewares
+
+Ensure Authenticated
+
+[x] Deve retornar 401 quando não for informado o Bearer token no authorization do header
+[] Deve retornar 401 quando o token for inválido
+[] Deve retornar 401 quando o usuário não existir
+[] Deve prosseguir com a chamada da rota no sucesso
+
+Rotas
+
+[] Qualquer pessoa deverá poder fazer parte da NG. Para isso, basta realizar o cadastro informando _username_ e _password_.
+[] Deve-se garantir que a _password_ seja _hashada_ ao ser armazenada no banco.
+[] Durante o processo de cadastro de um novo usuário, sua respectiva conta deverá ser criada automaticamente na tabela **Accounts** com um _balance_ de R$ 100,00.
+
+[] Todo usuário deverá conseguir logar na aplicação informando _username_ e _password._ Caso o login seja bem-sucedido, um token JWT (com 24h de validade) deverá ser fornecido.
+[] Validar se o usuário existe
+[] Validar se a senha está correta
+
+[] Usuário deverá ser capaz de visualizar seu próprio _balance_ atual.
+
+[] Usuário deverá ser capaz de realizar um _cash-out_ informando o _username_ do usuário que sofrerá o _cash-in_),
+[] Toda nova transação bem-sucedida deverá ser registrada na tabela **Transactions**.
+
+[] Usuário deverá ser capaz de visualizar as transações financeiras (_cash-out_ e _cash-in_) que participou.
+[] Usuário deverá ser capaz de filtrar as transações financeiras que participou por:
+[] Data de realização da transação e/ou
+[] Transações de _cash-out;_
+[] Transações de _cash-in._
