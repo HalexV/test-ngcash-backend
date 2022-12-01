@@ -1,0 +1,32 @@
+version: '3'
+services:
+  database-e2e-tests:
+    image: postgres
+    container_name: database-e2e-tests
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=docker
+      - POSTGRES_PASSWORD=ngcashe2etests
+      - POSTGRES_DB=ngcashe2etests
+    volumes:
+      - pgdata:/data/postgres
+  watch-e2e-tests:
+    build:
+      context: ../../
+      dockerfile: docker-envs/watch-e2e-tests/Dockerfile
+    container_name: watch-e2e-tests
+    ports:
+      - '3000:3000'
+    depends_on:
+      - database-e2e-tests
+    volumes:
+      - ../../__tests__/e2e/:/usr/app/__tests__/e2e/
+      - ../../src/:/usr/app/src/
+    env_file:
+      - ./.docker-env
+    command: npm run test:e2e
+
+volumes:
+  pgdata:
+    driver: local
