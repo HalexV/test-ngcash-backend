@@ -33,7 +33,7 @@ export default async function ensureAuthenticated(
 
     if (user == null)
       return response.status(401).json({
-        message: 'User does not exists',
+        message: 'User does not exist',
       });
 
     request.user = {
