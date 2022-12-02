@@ -78,9 +78,9 @@ Middlewares
 Ensure Authenticated
 
 [x] Deve retornar 401 quando não for informado o Bearer token no authorization do header
-[] Deve retornar 401 quando o token for inválido
-[] Deve retornar 401 quando o usuário não existir
-[] Deve prosseguir com a chamada da rota no sucesso
+[x] Deve retornar 401 quando o token for inválido
+[x] Deve retornar 401 quando o usuário não existir
+[x] Deve prosseguir com a chamada da rota no sucesso
 
 Rotas
 
