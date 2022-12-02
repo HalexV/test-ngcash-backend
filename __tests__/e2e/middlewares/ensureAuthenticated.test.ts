@@ -9,7 +9,6 @@ import AuthenticateUserUseCase from '../../../src/modules/user/useCases/authenti
 import CreateUserUseCase from '../../../src/modules/user/useCases/createUser/CreateUserUseCase';
 
 describe('Middlewares - Ensure Authenticated', () => {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   let validToken: string;
   let validToken2: string;
   beforeAll(async () => {
@@ -93,5 +92,14 @@ describe('Middlewares - Ensure Authenticated', () => {
 
     expect(response.statusCode).toStrictEqual(401);
     expect(response.body.message).toStrictEqual('User does not exist');
+  });
+
+  it('should call route when token is valid', async () => {
+    const response = await request(app)
+      .get('/test')
+      .set('authorization', `Bearer ${validToken}`);
+
+    expect(response.statusCode).toStrictEqual(200);
+    expect(response.body.result).toStrictEqual('ok');
   });
 });
