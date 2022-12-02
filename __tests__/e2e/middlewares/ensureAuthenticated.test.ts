@@ -19,4 +19,16 @@ describe('Middlewares - Ensure Authenticated', () => {
     expect(response.statusCode).toStrictEqual(401);
     expect(response.body.message).toStrictEqual('Token is missing');
   });
+
+  it('should return 401 when token is invalid', async () => {
+    const response = await request(app)
+      .get('/test')
+      .set(
+        'authorization',
+        'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c'
+      );
+
+    expect(response.statusCode).toStrictEqual(401);
+    expect(response.body.message).toStrictEqual('Invalid token');
+  });
 });
