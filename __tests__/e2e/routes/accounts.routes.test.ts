@@ -36,8 +36,13 @@ describe('Routes - Accounts', () => {
   afterAll(async () => {
     const deleteUsers = prisma.user.deleteMany();
     const deleteAccounts = prisma.account.deleteMany();
+    const deleteTransactions = prisma.transaction.deleteMany();
 
-    await prisma.$transaction([deleteUsers, deleteAccounts]);
+    await prisma.$transaction([
+      deleteTransactions,
+      deleteUsers,
+      deleteAccounts,
+    ]);
 
     await prisma.$disconnect();
   });
@@ -110,6 +115,30 @@ describe('Routes - Accounts', () => {
       expect(response.body.message).toStrictEqual(
         'Cash in username does not exist'
       );
+    });
+
+    it('should return 200 on success', async () => {
+      const body = {
+        cashInUsername: createUserDTO2.username,
+        value: 50,
+      };
+      const response = await request(app)
+        .post('/accounts/transfer')
+        .set('authorization', `Bearer ${userToken}`)
+        .send(body);
+
+      const userBalanceResponse = await request(app)
+        .get('/accounts/balance')
+        .set('authorization', `Bearer ${userToken}`);
+
+      const userBalanceResponse2 = await request(app)
+        .get('/accounts/balance')
+        .set('authorization', `Bearer ${userToken2}`);
+
+      expect(response.statusCode).toStrictEqual(200);
+      expect(response.body.message).toStrictEqual('Transfer success');
+      expect(userBalanceResponse.body.balance).toStrictEqual(50);
+      expect(userBalanceResponse2.body.balance).toStrictEqual(150);
     });
   });
 });
