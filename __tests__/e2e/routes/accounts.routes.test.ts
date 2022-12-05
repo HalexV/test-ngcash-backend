@@ -95,5 +95,21 @@ describe('Routes - Accounts', () => {
       expect(response.statusCode).toStrictEqual(400);
       expect(response.body.message).toStrictEqual('Balance insufficient');
     });
+
+    it('should return 404 when cash in username does not exist', async () => {
+      const body = {
+        cashInUsername: 'invalid123A',
+        value: 50,
+      };
+      const response = await request(app)
+        .post('/accounts/transfer')
+        .set('authorization', `Bearer ${userToken}`)
+        .send(body);
+
+      expect(response.statusCode).toStrictEqual(404);
+      expect(response.body.message).toStrictEqual(
+        'Cash in username does not exist'
+      );
+    });
   });
 });
