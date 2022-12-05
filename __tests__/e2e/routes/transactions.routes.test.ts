@@ -243,5 +243,23 @@ describe('Routes - Transactions', () => {
       expect(user2Debited).toStrictEqual(2);
       expect(user2Transactions.length).toStrictEqual(2);
     });
+
+    it('should return 200 and only transactions on 2022-01-01', async () => {
+      const response = await request(app)
+        .get('/transactions?transactionDate=2022-01-01')
+        .set('authorization', `Bearer ${userToken}`);
+
+      const response2 = await request(app)
+        .get('/transactions?transactionDate=2022-01-01')
+        .set('authorization', `Bearer ${userToken2}`);
+
+      const userTransactions: Transaction[] = response.body.transactions;
+      const user2Transactions: Transaction[] = response2.body.transactions;
+
+      expect(response.statusCode).toStrictEqual(200);
+      expect(userTransactions.length).toStrictEqual(0);
+      expect(response2.statusCode).toStrictEqual(200);
+      expect(user2Transactions.length).toStrictEqual(0);
+    });
   });
 });
