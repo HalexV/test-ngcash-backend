@@ -99,10 +99,16 @@ POST /login
 [x] Deve retornar 400 se o username não existir
 [x] Deve retornar 400 se a senha estiver incorreta
 
-[] Usuário deverá ser capaz de visualizar seu próprio _balance_ atual.
+GET /accounts/balance
 
-[] Usuário deverá ser capaz de realizar um _cash-out_ informando o _username_ do usuário que sofrerá o _cash-in_),
-[] Toda nova transação bem-sucedida deverá ser registrada na tabela **Transactions**.
+[x] Usuário deverá ser capaz de visualizar seu próprio _balance_ atual. Deve retornar 200 e o balanço da conta.
+
+POST /accounts/transfer
+
+[x] Usuário deverá ser capaz de realizar um _cash-out_ informando o _username_ do usuário que sofrerá o _cash-in_. Deve retornar 200.
+[x] Deve retornar 400 ao tentar transferir dinheiro para si mesmo
+[x] Deve retornar 400 se o balanço for insuficiente
+[x] Deve retornar 404 se o cash in username não existe
 
 [] Usuário deverá ser capaz de visualizar as transações financeiras (_cash-out_ e _cash-in_) que participou.
 [] Usuário deverá ser capaz de filtrar as transações financeiras que participou por:
