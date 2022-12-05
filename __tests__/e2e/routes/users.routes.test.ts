@@ -55,5 +55,19 @@ describe('Routes - Users', () => {
         'Password must be 8 characters or more and contain a number and an uppercase letter'
       );
     });
+
+    it('should return 400 when password does not contain at least a number', async () => {
+      const body = {
+        username: 'valid321ABC',
+        password: 'invaliDd',
+      };
+
+      const response = await request(app).post('/users').send(body);
+
+      expect(response.statusCode).toStrictEqual(400);
+      expect(response.body.message).toStrictEqual(
+        'Password must be 8 characters or more and contain a number and an uppercase letter'
+      );
+    });
   });
 });
