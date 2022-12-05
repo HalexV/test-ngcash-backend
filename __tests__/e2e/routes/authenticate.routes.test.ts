@@ -55,5 +55,18 @@ describe('Routes - Authenticate', () => {
         'Username or password is incorrect'
       );
     });
+
+    it('should return 200 on authentication success', async () => {
+      const body = {
+        username: 'testABC123',
+        password: 'testBCA321',
+      };
+
+      const response = await request(app).post('/login').send(body);
+
+      expect(response.statusCode).toStrictEqual(200);
+      expect(response.body.message).toStrictEqual('Login success');
+      expect(response.body).toHaveProperty('token');
+    });
   });
 });
