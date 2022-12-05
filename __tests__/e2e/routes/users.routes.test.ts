@@ -95,5 +95,17 @@ describe('Routes - Users', () => {
       expect(response.statusCode).toStrictEqual(400);
       expect(response.body.message).toStrictEqual('Username already exists');
     });
+
+    it('should return 201 when username is created', async () => {
+      const body = {
+        username: 'valid',
+        password: 'valiDd123',
+      };
+
+      const response = await request(app).post('/users').send(body);
+
+      expect(response.statusCode).toStrictEqual(201);
+      expect(response.body.message).toStrictEqual('User created');
+    });
   });
 });
