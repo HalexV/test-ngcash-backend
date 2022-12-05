@@ -93,9 +93,11 @@ POST /users
 [x] Deve retornar 400 quando a senha não contém pelo menos uma letra maiúscula
 [x] Deve retornar 400 quando o username já existe
 
-[] Todo usuário deverá conseguir logar na aplicação informando _username_ e _password._ Caso o login seja bem-sucedido, um token JWT (com 24h de validade) deverá ser fornecido.
-[] Validar se o usuário existe
-[] Validar se a senha está correta
+POST /login
+
+[x] Todo usuário deverá conseguir logar na aplicação informando _username_ e _password._ Caso o login seja bem-sucedido, um token JWT (com 24h de validade) deverá ser fornecido. Deve retornar o status 200
+[x] Deve retornar 400 se o username não existir
+[x] Deve retornar 400 se a senha estiver incorreta
 
 [] Usuário deverá ser capaz de visualizar seu próprio _balance_ atual.
 
