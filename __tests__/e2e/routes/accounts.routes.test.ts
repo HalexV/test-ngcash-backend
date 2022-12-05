@@ -81,5 +81,19 @@ describe('Routes - Accounts', () => {
         'Cash out to yourself invalid'
       );
     });
+
+    it('should return 400 when balance is insufficient', async () => {
+      const body = {
+        cashInUsername: createUserDTO2.username,
+        value: 101,
+      };
+      const response = await request(app)
+        .post('/accounts/transfer')
+        .set('authorization', `Bearer ${userToken}`)
+        .send(body);
+
+      expect(response.statusCode).toStrictEqual(400);
+      expect(response.body.message).toStrictEqual('Balance insufficient');
+    });
   });
 });
