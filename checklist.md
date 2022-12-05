@@ -110,8 +110,11 @@ POST /accounts/transfer
 [x] Deve retornar 400 se o balanço for insuficiente
 [x] Deve retornar 404 se o cash in username não existe
 
-[] Usuário deverá ser capaz de visualizar as transações financeiras (_cash-out_ e _cash-in_) que participou.
-[] Usuário deverá ser capaz de filtrar as transações financeiras que participou por:
-[] Data de realização da transação e/ou
-[] Transações de _cash-out;_
-[] Transações de _cash-in._
+GET /transactions
+
+[x] Usuário deverá ser capaz de visualizar as transações financeiras (_cash-out_ e _cash-in_) que participou. Deve retornar 200.
+[x] Usuário deverá ser capaz de filtrar as transações financeiras que participou por:
+[x] Data de realização da transação e/ou
+[x] Transações de _cash-out;_
+[x] Transações de _cash-in._
+[x] Em todas as operações acima deve ser retornado o status 200.
