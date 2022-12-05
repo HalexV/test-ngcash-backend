@@ -83,5 +83,17 @@ describe('Routes - Users', () => {
         'Password must be 8 characters or more and contain a number and an uppercase letter'
       );
     });
+
+    it('should return 400 when username already exists', async () => {
+      const body = {
+        username: 'testABC123',
+        password: 'valiDd123',
+      };
+
+      const response = await request(app).post('/users').send(body);
+
+      expect(response.statusCode).toStrictEqual(400);
+      expect(response.body.message).toStrictEqual('Username already exists');
+    });
   });
 });
