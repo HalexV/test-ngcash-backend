@@ -84,9 +84,14 @@ Ensure Authenticated
 
 Rotas
 
-[] Qualquer pessoa deverá poder fazer parte da NG. Para isso, basta realizar o cadastro informando _username_ e _password_.
-[] Deve-se garantir que a _password_ seja _hashada_ ao ser armazenada no banco.
-[] Durante o processo de cadastro de um novo usuário, sua respectiva conta deverá ser criada automaticamente na tabela **Accounts** com um _balance_ de R$ 100,00.
+POST /users
+
+[x] Qualquer pessoa deverá poder fazer parte da NG. Para isso, basta realizar o cadastro informando _username_ e _password_. Deve retornar 201.
+[x] Deve retornar 400 quando o username for menor que 3
+[x] Deve retornar 400 quando a senha for menor que 8
+[x] Deve retornar 400 quando a senha não contém pelo menos um número
+[x] Deve retornar 400 quando a senha não contém pelo menos uma letra maiúscula
+[x] Deve retornar 400 quando o username já existe
 
 [] Todo usuário deverá conseguir logar na aplicação informando _username_ e _password._ Caso o login seja bem-sucedido, um token JWT (com 24h de validade) deverá ser fornecido.
 [] Validar se o usuário existe
