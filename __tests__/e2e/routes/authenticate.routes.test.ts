@@ -41,5 +41,19 @@ describe('Routes - Authenticate', () => {
         'Username or password is incorrect'
       );
     });
+
+    it('should return 400 when password is incorrect', async () => {
+      const body = {
+        username: 'testABC123',
+        password: 'invaliD123',
+      };
+
+      const response = await request(app).post('/login').send(body);
+
+      expect(response.statusCode).toStrictEqual(400);
+      expect(response.body.message).toStrictEqual(
+        'Username or password is incorrect'
+      );
+    });
   });
 });
