@@ -149,5 +149,52 @@ describe('Routes - Transactions', () => {
       expect(user2Debited).toStrictEqual(2);
       expect(user2Transactions.length).toStrictEqual(5);
     });
+
+    it('should return 200 and only cash in transactions', async () => {
+      const response = await request(app)
+        .get('/transactions?cashInTransactions=true')
+        .set('authorization', `Bearer ${userToken}`);
+
+      const response2 = await request(app)
+        .get('/transactions?cashInTransactions=true')
+        .set('authorization', `Bearer ${userToken2}`);
+
+      const userTransactions: Transaction[] = response.body.transactions;
+      const user2Transactions: Transaction[] = response2.body.transactions;
+
+      let userDebited = 0;
+      let userCredited = 0;
+      let user2Debited = 0;
+      let user2Credited = 0;
+
+      userTransactions.forEach((transaction) => {
+        if (transaction.creditedAccountId === user.accountId) {
+          userCredited++;
+        }
+
+        if (transaction.debitedAccountId === user.accountId) {
+          userDebited++;
+        }
+      });
+
+      user2Transactions.forEach((transaction) => {
+        if (transaction.creditedAccountId === user2.accountId) {
+          user2Credited++;
+        }
+
+        if (transaction.debitedAccountId === user2.accountId) {
+          user2Debited++;
+        }
+      });
+
+      expect(response.statusCode).toStrictEqual(200);
+      expect(userCredited).toStrictEqual(2);
+      expect(userDebited).toStrictEqual(0);
+      expect(userTransactions.length).toStrictEqual(2);
+      expect(response2.statusCode).toStrictEqual(200);
+      expect(user2Credited).toStrictEqual(3);
+      expect(user2Debited).toStrictEqual(0);
+      expect(user2Transactions.length).toStrictEqual(3);
+    });
   });
 });
