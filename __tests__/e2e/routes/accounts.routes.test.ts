@@ -4,6 +4,7 @@ import request from 'supertest';
 import app from '../../../src/app';
 import prisma from '../../../src/client';
 import NotFoundError from '../../../src/errors/NotFoundError';
+import CashOutAccountUseCase from '../../../src/modules/account/useCases/cashOutAccount/CashOutAccountUseCase';
 import ReadAccountBalanceUseCase from '../../../src/modules/account/useCases/readAccountBalance/ReadAccountBalanceUseCase';
 import AuthenticateUserUseCase from '../../../src/modules/user/useCases/authenticateUser/AuthenticateUserUseCase';
 import CreateUserUseCase from '../../../src/modules/user/useCases/createUser/CreateUserUseCase';
@@ -142,6 +143,24 @@ describe('Routes - Accounts', () => {
       expect(response.body.message).toStrictEqual(
         'Cash in username does not exist'
       );
+    });
+
+    it('should return 500 when a not mapped error occurs', async () => {
+      jest
+        .spyOn(CashOutAccountUseCase.prototype, 'execute')
+        .mockRejectedValueOnce(new Error());
+
+      const body = {
+        cashInUsername: 'valid123ABC',
+        value: 50,
+      };
+      const response = await request(app)
+        .post('/accounts/transfer')
+        .set('authorization', `Bearer ${userToken}`)
+        .send(body);
+
+      expect(response.statusCode).toStrictEqual(500);
+      expect(response.body.message).toStrictEqual('Internal Server Error');
     });
 
     it('should return 200 on success', async () => {
