@@ -82,6 +82,19 @@ describe('Routes - Accounts', () => {
       expect(response.statusCode).toStrictEqual(404);
       expect(response.body.message).toStrictEqual('test');
     });
+
+    it('should return 500 when a not mapped error occurs', async () => {
+      jest
+        .spyOn(ReadAccountBalanceUseCase.prototype, 'execute')
+        .mockRejectedValueOnce(new Error());
+
+      const response = await request(app)
+        .get('/accounts/balance')
+        .set('authorization', `Bearer ${userToken}`);
+
+      expect(response.statusCode).toStrictEqual(500);
+      expect(response.body.message).toStrictEqual('Internal Server Error');
+    });
   });
 
   describe('POST /accounts/transfer', () => {
