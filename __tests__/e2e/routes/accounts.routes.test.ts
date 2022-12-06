@@ -1,8 +1,10 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
-import { describe, it, beforeAll, expect, afterAll } from '@jest/globals';
+import { describe, it, beforeAll, expect, afterAll, jest } from '@jest/globals';
 import request from 'supertest';
 import app from '../../../src/app';
 import prisma from '../../../src/client';
+import NotFoundError from '../../../src/errors/NotFoundError';
+import ReadAccountBalanceUseCase from '../../../src/modules/account/useCases/readAccountBalance/ReadAccountBalanceUseCase';
 import AuthenticateUserUseCase from '../../../src/modules/user/useCases/authenticateUser/AuthenticateUserUseCase';
 import CreateUserUseCase from '../../../src/modules/user/useCases/createUser/CreateUserUseCase';
 
@@ -18,7 +20,6 @@ describe('Routes - Accounts', () => {
   };
 
   let userToken: string;
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   let userToken2: string;
 
   beforeAll(async () => {
@@ -67,6 +68,19 @@ describe('Routes - Accounts', () => {
       expect(balanceResponse.statusCode).toStrictEqual(200);
       expect(balanceResponse.body.message).toStrictEqual('Success');
       expect(balanceResponse.body.balance).toStrictEqual(100);
+    });
+
+    it('should return 404 when a not found error occurs', async () => {
+      jest
+        .spyOn(ReadAccountBalanceUseCase.prototype, 'execute')
+        .mockRejectedValueOnce(new NotFoundError('test'));
+
+      const response = await request(app)
+        .get('/accounts/balance')
+        .set('authorization', `Bearer ${userToken}`);
+
+      expect(response.statusCode).toStrictEqual(404);
+      expect(response.body.message).toStrictEqual('test');
     });
   });
 
