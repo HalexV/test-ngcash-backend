@@ -2,7 +2,11 @@ const config: any = {
   clearMocks: true,
   collectCoverageFrom: ['<rootDir>/src/**/*.ts'],
   coverageDirectory: 'coverage',
-  coveragePathIgnorePatterns: ['<rootDir>/src/.*/dtos'],
+  coveragePathIgnorePatterns: [
+    '<rootDir>/src/.*/dtos',
+    '<rootDir>/src/server.ts',
+    '<rootDir>/src/@types/.*',
+  ],
   coverageProvider: 'v8',
   coverageReporters: ['html', 'text'],
   coverageThreshold: {

@@ -1,0 +1,31 @@
+version: '3'
+services:
+  database-coverage:
+    image: postgres
+    container_name: database-coverage
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=docker
+      - POSTGRES_PASSWORD=ngcashcoverage
+      - POSTGRES_DB=ngcashcoverage
+    volumes:
+      - pgdata:/data/postgres
+  coverage:
+    build:
+      context: ../../
+      dockerfile: docker-envs/coverage/Dockerfile
+    container_name: coverage
+    ports:
+      - '3000:3000'
+    depends_on:
+      - database-coverage
+    volumes:
+      - ../../coverage/:/usr/app/coverage/
+    env_file:
+      - ./.docker-env
+    command: npm run test:coverage
+
+volumes:
+  pgdata:
+    driver: local
