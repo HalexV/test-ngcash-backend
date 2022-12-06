@@ -1,8 +1,9 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
-import { describe, it, beforeAll, expect, afterAll } from '@jest/globals';
+import { describe, it, beforeAll, expect, afterAll, jest } from '@jest/globals';
 import request from 'supertest';
 import app from '../../../src/app';
 import prisma from '../../../src/client';
+import AuthenticateUserUseCase from '../../../src/modules/user/useCases/authenticateUser/AuthenticateUserUseCase';
 import CreateUserUseCase from '../../../src/modules/user/useCases/createUser/CreateUserUseCase';
 
 describe('Routes - Authenticate', () => {
@@ -54,6 +55,22 @@ describe('Routes - Authenticate', () => {
       expect(response.body.message).toStrictEqual(
         'Username or password is incorrect'
       );
+    });
+
+    it('should return 500 when a not mapped error occurs', async () => {
+      jest
+        .spyOn(AuthenticateUserUseCase.prototype, 'execute')
+        .mockRejectedValueOnce(new Error());
+
+      const body = {
+        username: 'testABC123',
+        password: 'valiD123',
+      };
+
+      const response = await request(app).post('/login').send(body);
+
+      expect(response.statusCode).toStrictEqual(500);
+      expect(response.body.message).toStrictEqual('Internal Server Error');
     });
 
     it('should return 200 on authentication success', async () => {
