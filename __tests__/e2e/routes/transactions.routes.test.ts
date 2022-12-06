@@ -1,9 +1,10 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
-import { describe, it, beforeAll, expect, afterAll } from '@jest/globals';
+import { describe, it, beforeAll, expect, afterAll, jest } from '@jest/globals';
 import { Transaction, User } from '@prisma/client';
 import request from 'supertest';
 import app from '../../../src/app';
 import prisma from '../../../src/client';
+import ListTransactionsUseCase from '../../../src/modules/transaction/useCases/listTransactions/ListTransactionsUseCase';
 import AuthenticateUserUseCase from '../../../src/modules/user/useCases/authenticateUser/AuthenticateUserUseCase';
 import CreateUserUseCase from '../../../src/modules/user/useCases/createUser/CreateUserUseCase';
 
@@ -260,6 +261,19 @@ describe('Routes - Transactions', () => {
       expect(userTransactions.length).toStrictEqual(0);
       expect(response2.statusCode).toStrictEqual(200);
       expect(user2Transactions.length).toStrictEqual(0);
+    });
+
+    it('should return 500 when a not mapped error occurs', async () => {
+      jest
+        .spyOn(ListTransactionsUseCase.prototype, 'execute')
+        .mockRejectedValueOnce(new Error());
+
+      const response = await request(app)
+        .get('/transactions?cashOutTransactions=false&cashInTransactions=false')
+        .set('authorization', `Bearer ${userToken}`);
+
+      expect(response.statusCode).toStrictEqual(500);
+      expect(response.body.message).toStrictEqual('Internal Server Error');
     });
   });
 });
