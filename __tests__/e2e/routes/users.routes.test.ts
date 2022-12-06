@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
-import { describe, it, beforeAll, expect, afterAll } from '@jest/globals';
+import { describe, it, beforeAll, expect, afterAll, jest } from '@jest/globals';
 import request from 'supertest';
 import app from '../../../src/app';
 import prisma from '../../../src/client';
@@ -94,6 +94,22 @@ describe('Routes - Users', () => {
 
       expect(response.statusCode).toStrictEqual(400);
       expect(response.body.message).toStrictEqual('Username already exists');
+    });
+
+    it('should return 500 when a not mapped error occurs', async () => {
+      jest
+        .spyOn(CreateUserUseCase.prototype, 'execute')
+        .mockRejectedValueOnce(new Error());
+
+      const body = {
+        username: 'testABC123',
+        password: 'valiDd123',
+      };
+
+      const response = await request(app).post('/users').send(body);
+
+      expect(response.statusCode).toStrictEqual(500);
+      expect(response.body.message).toStrictEqual('Internal Server Error');
     });
 
     it('should return 201 when username is created', async () => {
