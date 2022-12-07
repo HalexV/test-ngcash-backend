@@ -159,13 +159,13 @@ $ npm install ci
 
 # Na raiz do projeto (local onde fica o package.json), execute:
 
-$ npm run docker:up:start:dev
+$ npm run docker:start:dev:up
 
 # Acesse http://localhost:3000/ para verificar a mensagem Safe!
 
 # Para encerrar a execução em modo de desenvolvimento, execute:
 
-$ npm run docker:down:start:dev
+$ npm run docker:start:dev:down
 ```
 
 ### Executando o projeto em modo de produção
@@ -179,13 +179,13 @@ $ npm run docker:down:start:dev
 
 # Na raiz do projeto (local onde fica o package.json), execute:
 
-$ npm run docker:up:start:prod
+$ npm run docker:start:prod:up
 
 # Acesse http://localhost:PORT/ para verificar a mensagem Safe!
 
 # Para encerrar a execução em modo de produção, execute:
 
-$ npm run docker:down:start:prod
+$ npm run docker:start:prod:down
 ```
 
 ### Executando o projeto em modo de teste unitário
@@ -198,7 +198,7 @@ $ npm run docker:down:start:prod
 
 # Na raiz do projeto (local onde fica o package.json), execute:
 
-$ npm run docker:up:test:unit
+$ npm run docker:test:unit:up
 
 # Acesse os logs do container para verificar a execução dos testes
 
@@ -206,7 +206,68 @@ $ docker logs -f watch-unit-tests
 
 # Para encerrar a execução em modo de teste unitário, execute:
 
-$ npm run docker:down:test:unit
+$ npm run docker:test:unit:down
+```
+
+### Executando o projeto em modo de teste de integração
+
+- Pré-requisito:
+  - Preencha as variáveis de ambiente do arquivo .docker-env na pasta docker-envs/watch-integration-tests a seu critério.
+
+```
+# O projeto em modo de teste de integração é executado de dentro de um container do Docker. O modo de teste de integração possui live-reload, ou seja, o servidor é reiniciado toda vez que as alterações no código da aplicação ou dos testes são salvas. Uma instância do Postgres é iniciada junto para os testes.
+
+# Na raiz do projeto (local onde fica o package.json), execute:
+
+$ npm run docker:test:integration:up
+
+# Acesse os logs do container para verificar a execução dos testes
+
+$ docker logs -f watch-integration-tests
+
+# Para encerrar a execução em modo de teste de integração, execute:
+
+$ npm run docker:test:integration:down
+```
+
+### Executando o projeto em modo de teste End-to-End (E2E)
+
+- Pré-requisito:
+  - Preencha as variáveis de ambiente do arquivo .docker-env na pasta docker-envs/watch-e2e-tests a seu critério.
+
+```
+# O projeto em modo de teste e2e é executado de dentro de um container do Docker. O modo de teste e2e possui live-reload, ou seja, o servidor é reiniciado toda vez que as alterações no código da aplicação ou dos testes são salvas. Uma instância do Postgres é iniciada junto para os testes.
+
+# Na raiz do projeto (local onde fica o package.json), execute:
+
+$ npm run docker:test:e2e:up
+
+# Acesse os logs do container para verificar a execução dos testes
+
+$ docker logs -f watch-e2e-tests
+
+# Para encerrar a execução em modo de teste e2e, execute:
+
+$ npm run docker:test:e2e:down
+```
+
+### Executando todos os testes juntos e coletando o coverage
+
+- Pré-requisito:
+  - Preencha as variáveis de ambiente do arquivo .docker-env na pasta docker-envs/coverage a seu critério.
+
+```
+# O projeto nesse modo de testes é executado de dentro de um container do Docker. Todos os testes criados são executados e o coverage é coletado e refletido para a pasta coverage do projeto. Uma instância do Postgres é iniciada junto para os testes.
+
+# Na raiz do projeto (local onde fica o package.json), execute:
+
+$ npm run docker:coverage:up
+
+# O container é executado e o terminal é ligado aos logs do container automaticamente.
+
+# Quando o coverage é coletado, o container é parado automaticamente. Para destruir o container, execute:
+
+$ npm run docker:coverage:down
 ```
 
 # Autor
